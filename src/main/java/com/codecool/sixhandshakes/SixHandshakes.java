@@ -1,5 +1,6 @@
 package com.codecool.sixhandshakes;
 
+import com.codecool.sixhandshakes.finders.FriendsOfFriendsFinder;
 import com.codecool.sixhandshakes.finders.HandshakeCalculator;
 import com.codecool.sixhandshakes.model.UserNode;
 
@@ -13,40 +14,51 @@ public class SixHandshakes {
     private static GraphPlotter graphPlotter;
 
     public static void main(String[] args) {
+        start();
+    }
+
+    private static void start() {
         UserNode start = null;
         UserNode finish = null;
-//        boolean checher;
         initSocialGraph();
-
         int menuOption = getIntAsInput();
         switch (menuOption) {
-            case 1:
+            case 1 -> {
                 String firstName1 = users.get(4).getFirstName();
                 String lastName1 = users.get(4).getLastName();
                 String firstName2 = users.get(7).getFirstName();
                 String lastName2 = users.get(7).getLastName();
                 for (int j = 0; j < users.size(); j++) {
-                    for (int i = 0; i < users.size(); i++) {
-                        if (Objects.equals(users.get(i).getFirstName(), firstName1) && Objects.equals(users.get(i).getLastName(), lastName1)) {
+                    for (UserNode user : users) {
+                        if (Objects.equals(user.getFirstName(), firstName1) && Objects.equals(user.getLastName(), lastName1)) {
                             if (Objects.equals(users.get(j).getFirstName(), firstName2) && Objects.equals(users.get(j).getLastName(), lastName2)) {
-                                start = users.get(i);
+                                start = user;
                                 finish = users.get(j);
                             }
                         }
                     }
                 }
-
                 int count = HandshakeCalculator.getMinimumHandshakesBetween(start, finish);
                 System.out.println("Handshakes between " + start + " and " + finish + " is " + count + " ");
-                ;
-            case default:
-                System.out.println("There are no menu options, please try again ");
-
+            }
+            case 2 -> {
+                int distance = 4;
+                UserNode user = users.get(6);
+                Set<UserNode> friends = FriendsOfFriendsFinder.getFriendsOfFriends(user, distance);
+                System.out.println("Friends of friends with distance " + distance + " about " + user + " is:" + friends + " ");
+            }
+            case default -> error("There are no menu options, please try again ");
         }
 
         graphPlotter = new GraphPlotter(users);
         System.out.println("Done!");
 
+    }
+
+
+    private static void error(String s) {
+        System.out.println(s);
+        start();
     }
 
     private static void initSocialGraph() {
@@ -79,6 +91,7 @@ public class SixHandshakes {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Choose from the menu: ");
             System.out.println("1. Minimum handshakes");
+            System.out.println("2. Friends of friends");
             choose = scanner.nextInt();
         } catch (Exception e) {
             System.out.println("Not valid form.");
