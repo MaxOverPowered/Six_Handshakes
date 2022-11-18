@@ -1,5 +1,6 @@
 package com.codecool.sixhandshakes;
 
+import com.codecool.sixhandshakes.finders.FriendChainCalculator;
 import com.codecool.sixhandshakes.finders.FriendsOfFriendsFinder;
 import com.codecool.sixhandshakes.finders.HandshakeCalculator;
 import com.codecool.sixhandshakes.model.UserNode;
@@ -22,6 +23,8 @@ public class SixHandshakes {
         UserNode finish = null;
         initSocialGraph();
         int menuOption = getIntAsInput();
+        graphPlotter = new GraphPlotter(users);
+
         switch (menuOption) {
             case 1 -> {
                 String firstName1 = users.get(4).getFirstName();
@@ -45,12 +48,24 @@ public class SixHandshakes {
                 int distance = 4;
                 UserNode user = users.get(6);
                 Set<UserNode> friends = FriendsOfFriendsFinder.getFriendsOfFriends(user, distance);
+                visualizeFriendCircle(friends,user);
                 System.out.println("Friends of friends with distance " + distance + " about " + user + " is:" + friends + " ");
+            }
+            case 3 ->{
+                UserNode beginuser = users.get(10);
+                UserNode finaluser = users.get(20);
+                List<List<UserNode>> shortestPaths = FriendChainCalculator.getShortestRoutesBetween(beginuser, finaluser);
+                printRoutes(shortestPaths);
+                for (List<UserNode> path : shortestPaths) {
+                    graphPlotter.highlightRoute(path);
+                }
+//                System.out.println("Shortest path between " + beginuser + " and " + finaluser + " is: " + chain + " ");;
+//
             }
             case default -> error("There are no menu options, please try again ");
         }
 
-        graphPlotter = new GraphPlotter(users);
+//        graphPlotter = new GraphPlotter(users);
         System.out.println("Done!");
 
     }
@@ -92,6 +107,7 @@ public class SixHandshakes {
             System.out.println("Choose from the menu: ");
             System.out.println("1. Minimum handshakes");
             System.out.println("2. Friends of friends");
+            System.out.println("3. Shortest routes");
             choose = scanner.nextInt();
         } catch (Exception e) {
             System.out.println("Not valid form.");
