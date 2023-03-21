@@ -27,3 +27,15 @@ To install and use Six Handshakes, follow these steps:
 2. Open the project in your preferred IDE. </br>
 3. Run the SixHandshakes.java file to launch the application. </br>
 4. Select the desired feature from the menu and follow the prompts to enter the required data. </br>
+
+
+## Menu
+
+![image](https://user-images.githubusercontent.com/99211882/226536091-f8c83aca-649e-4aaa-9f63-2f3bb3559a23.png)
+
+
+## Friends of friends graph
+
+![image](https://user-images.githubusercontent.com/99211882/226536250-a230026c-03a3-4658-96d1-b7a49a706c82.png)
+
+
